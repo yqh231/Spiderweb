@@ -1,17 +1,12 @@
-import urllib
-import requests
-import urllib2
-class test(object):
-    def crawer(self):
-        for i in range(10):
-            yield "success %d" % i
-list = []
-crawer = test()
-if (isinstance(crawer,object)):
-    print "true"
-# object = crawer.crawer()
-# while object.next():
-#     print object.next()
+import Queue
 
+q = Queue.Queue()
+
+def func():
+    print "success!!"
+
+q.put(func)
+s = q.get()()
+#print callable(s)
 
 
