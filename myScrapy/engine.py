@@ -1,5 +1,6 @@
-#from request import crawer_geturl
+import threading
 from lxml import etree
+from __Threading import ThreadManager, ScrapyWorker
 from threading import Thread
 
 
@@ -8,29 +9,39 @@ class engine_Manager(object):
     def __init__(self):
         self.engine = engine_Manager()
         self.request_object = None
+        self.request_list = []
+        self.Thread_Scrapy = self.ScrapyManager()
 
     def Crawer(self):
         request_object = spider.start_request()
         while True:
             try:
                 res_object = request_object.next()
-                if (res_object.method == "GET"):
-                    response = res_object.get()
-                    html = etree.HTML(response.lower.decode("utf-8"))
-                    response = res_object.func(html)
-                    if(isinstance(response, object)):
-                        self.engine.Crawer_next(response)
+                self.request_list.append(res_object)
+                # if (res_object.method == "GET"):
+                #     response = res_object.get()
+                #     html = etree.HTML(response.lower.decode("utf-8"))
+                #     response = res_object.func(html)
+                #     if(isinstance(response, object)):
+                #         self.engine.Crawer_next(response)
 
 
                 elif(res_object.method == "POST"):
-                    response = res_object.post()
-                    html = etree.HTML(response.lower.decode("utf-8"))
-                    res_object.func(html)
-                    if (isinstance(response, object)):
-                        self.engine.Crawer_next(response)
+                self.request_list.append(res_object)
+                    # response = res_object.post()
+                    # html = etree.HTML(response.lower.decode("utf-8"))
+                    # res_object.func(html)
+                    # if (isinstance(response, object)):
+                    #     self.engine.Crawer_next(response)
 
-            except StopIteration as e:
-                pass
+            except StopIteration:
+
+                break
+        while 1:
+            try:
+                item = self.request_list.pop()
+                threading.Thread(target = self.Thread_Scrapy.add_func(item)).start()
+            except self.request_list.empty():
                 break
 
     def Crawer_next(self, response):

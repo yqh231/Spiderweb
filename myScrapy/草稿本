@@ -1,12 +1,16 @@
-import Queue
-
-q = Queue.Queue()
-
-def func():
-    print "success!!"
-
-q.put(func)
-s = q.get()()
-#print callable(s)
+def test1():
+    for i in range(10):
+        yield i
+        yield i+1
+        yield i+2
+        for i in range(10):
+            print "me"
 
 
+object = test1()
+
+for i in range(10):
+    print object.next()
+    for i in range(10):
+        print i
+#print temp
