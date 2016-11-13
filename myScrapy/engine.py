@@ -37,12 +37,12 @@ class engine_Manager(object):
             except StopIteration:
 
                 break
-        while 1:
-            try:
-                item = self.request_list.pop()
-                threading.Thread(target = self.Thread_Scrapy.add_func(item)).start()
-            except self.request_list.empty():
-                break
+        self.Crawer_start()
+
+    def Crawer_start(self):
+        if not self.request_list.empty():
+            threading.Thread(self.Thread_Scrapy.add_func(func = self.request_list)).start()
+
 
     def Crawer_next(self, response):
         while True:

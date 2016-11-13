@@ -1,16 +1,18 @@
-def test1():
-    for i in range(10):
-        yield i
-        yield i+1
-        yield i+2
-        for i in range(10):
-            print "me"
 
-
-object = test1()
-
-for i in range(10):
-    print object.next()
-    for i in range(10):
+class A1(object):
+    def func1(self):
+        print "func1"
         print i
-#print temp
+
+class A2(object):
+    def func2(self):
+        print"func2"
+
+class child(A1, A2):
+    def __init__(self):
+        x = super(child,self)
+        x.func1()
+        super(A1,self).func2()
+    #print self.func2
+
+x = child()
